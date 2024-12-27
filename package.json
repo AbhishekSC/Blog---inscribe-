@@ -1,0 +1,26 @@
+{
+  "name": "youtube-blog",
+  "version": "1.0.0",
+  "description": "This is an blog app made using express and have all the CRUD operations with authentication and authorizaion",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "express",
+    "blog"
+  ],
+  "author": "Abhishek Singh Chauhan",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-hash": "^3.1.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
