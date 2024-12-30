@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { handleUserSignin, handleUserSignup } from "../controllers/user.controller.js";
+import {
+  handleUserSignin,
+  handleUserSignup,
+} from "../controllers/user.controller.js";
 
 const router = Router();
 
@@ -15,5 +18,8 @@ router.get("/signup", (req, res) => {
 
 router.post("/signup", handleUserSignup);
 router.post("/signin", handleUserSignin);
+router.get("/logout", (req, res) => {
+  return res.clearCookie("token").redirect("/");
+});
 
 export default router;

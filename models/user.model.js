@@ -1,6 +1,7 @@
 //import
 import mongoose from "mongoose";
 import { randomBytes, createHmac } from "crypto";
+import { createTokenForUser } from "../services/authentication.service.js";
 
 //Schema
 const userSchema = new mongoose.Schema(
@@ -57,25 +58,30 @@ userSchema.pre("save", function (next) {
 
 //Virtual functions
 //matching the password coming from user with DB password
-userSchema.static("matchPassword", async function (email, password) {
-  const user = await this.findOne({ email });
-  if (!user) throw new Error("User not found!");
+userSchema.static(
+  "matchPasswordAndGenerateToken",
+  async function (email, password) {
+    const user = await this.findOne({ email });
+    if (!user) throw new Error("User not found!");
 
-  //salt and password from DB
-  const salt = user.salt;
-  const hashedPassword = user.password;
+    //salt and password from DB
+    const salt = user.salt;
+    const hashedPassword = user.password;
 
-  //hashedPassword from user
-  const userProvidedHash = createHmac("sha256", salt)
-    .update(password)
-    .digest("hex");
+    //hashedPassword from user
+    const userProvidedHash = createHmac("sha256", salt)
+      .update(password)
+      .digest("hex");
 
-  if (userProvidedHash !== hashedPassword) {
-    throw new Error("Incorrect password");
+    if (userProvidedHash !== hashedPassword) {
+      throw new Error("Incorrect password");
+    }
+
+    //   return user;
+    const token = createTokenForUser(user);
+    return token;
   }
-
-  return user;
-});
+);
 
 //model
 const User = mongoose.model("user", userSchema);
