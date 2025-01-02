@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+    <title>Blog</title>
+    <style>
+      .blog-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .cover-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .blog-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 1.5rem 0;
+        color: #2d3748;
+      }
+
+      .meta-container {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 2rem;
+        justify-content: space-between;
+      }
+
+      .date {
+        color: #718096;
+        font-size: 0.95rem;
+      }
+
+      .author-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .profile-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 0.75rem;
+        border: 2px solid #e2e8f0;
+      }
+
+      .author-name {
+        font-weight: 600;
+        color: #4a5568;
+      }
+
+      .blog-content {
+        font-family: "Georgia", serif;
+        line-height: 1.8;
+        color: #2d3748;
+        font-size: 1.1rem;
+        white-space: pre-wrap;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .blog-title {
+          font-size: 2rem;
+        }
+
+        .cover-image {
+          height: 300px;
+        }
+
+        .author-container {
+          margin-left: 0;
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/nav.ejs') %>
+
+    <main class="blog-container">
+      <img
+        src="<%= blog.coverImageURL %>"
+        alt="<%= blog.title %>"
+        class="cover-image"
+      />
+
+      <h1 class="blog-title"><%= blog.title %></h1>
+
+      <div class="meta-container">
+        <div class="author-container">
+          <img
+            src="<%= blog.createdBy.profileImage %>"
+            alt="Author profile"
+            class="profile-image"
+          />
+          <span class="author-name"><%= blog.createdBy.fullName %></span>
+        </div>
+        <span class="date">
+          <%= new Date(blog.createdAt).toLocaleDateString('en-US', { month:
+          'short', day: 'numeric', year: 'numeric' }) %>
+        </span>
+      </div>
+
+      <div class="blog-content"><%= blog.body %></div>
+    </main>
+
+    <%- include('./partials/scripts.ejs')%>
+  </body>
+</html>
