@@ -1,6 +1,74 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark">
+<!-- Custom CSS for enhanced styling -->
+<style>
+  .custom-navbar {
+    background: linear-gradient(to right, #1a1a1a, #2c3e50) !important;
+    padding: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-brand {
+    color: #fff !important;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .navbar-brand:hover {
+    color: #3498db !important;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: #fff !important;
+    background-color: rgba(52, 152, 219, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .dropdown-menu {
+    background-color: #2c3e50;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+  }
+
+  .dropdown-item:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateX(5px);
+  }
+
+  .navbar-toggler {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 0.5rem;
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.7)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg custom-navbar">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">Inscribe+</a>
+    <!-- Brand -->
+    <a class="navbar-brand" href="/">
+      <i class="fas fa-pen-fancy me-2"></i>Inscribe+
+    </a>
+
+    <!-- Mobile Toggle Button -->
     <button
       class="navbar-toggler"
       type="button"
@@ -12,14 +80,26 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+
+    <!-- Navigation Items -->
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarNavDropdown"
+    >
+      <ul class="navbar-nav align-items-center">
+        <!-- Home Link -->
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link" aria-current="page" href="/">
+            <i class="fas fa-home me-1"></i>Home
+          </a>
         </li>
+
+        <!-- Conditional Navigation for Logged-in Users -->
         <% if (locals.user) { %>
         <li class="nav-item">
-          <a class="nav-link" href="/blog/add-new">Add Blog</a>
+          <a class="nav-link" href="/blog/add-new">
+            <i class="fas fa-plus-circle me-1"></i>Add Blog
+          </a>
         </li>
         <li class="nav-item dropdown">
           <a
@@ -29,21 +109,38 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
+            <i class="fas fa-user-circle me-1"></i>
             <%= locals.user.email.split('@')[0].toUpperCase() %>
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" href="/user/logout">
+                <i class="fas fa-sign-out-alt me-2"></i>Logout
+              </a>
+            </li>
           </ul>
         </li>
-        <% } else {%>
+
+        <!-- Navigation for Non-logged-in Users -->
+        <% } else { %>
         <li class="nav-item">
-          <a class="nav-link" href="/user/signup">Create Account</a>
+          <a class="nav-link" href="/user/signup">
+            <i class="fas fa-user-plus me-1"></i>Create Account
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/user/signin">Signin</a>
+          <a class="nav-link" href="/user/signin">
+            <i class="fas fa-sign-in-alt me-1"></i>Sign In
+          </a>
         </li>
-        <%} %>
+        <% } %>
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- Add FontAwesome for icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
