@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -10,11 +12,12 @@ import blogRouter from "./routes/blog.route.js";
 
 import Blog from "./models/blog.model.js";
 
+const PORT = process.env.PORT || 8000;
+const MONGO_URI = process.env.MONGO_URI;
 const app = express();
-const PORT = 8000;
 
 //connecting to MongoDB
-connectToMongoDB();
+connectToMongoDB(MONGO_URI);
 
 //setting path and engine for views
 app.set("view engine", "ejs");

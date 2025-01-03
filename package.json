@@ -2,11 +2,11 @@
   "name": "youtube-blog",
   "version": "1.0.0",
   "description": "This is an blog app made using express and have all the CRUD operations with authentication and authorizaion",
-  "main": "index.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "keywords": [
     "express",
@@ -17,6 +17,7 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "crypto-hash": "^3.1.0",
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
