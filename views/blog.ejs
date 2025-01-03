@@ -42,6 +42,7 @@
       .author-container {
         display: flex;
         align-items: center;
+        justify-content: space-between;
       }
 
       .profile-image {
@@ -81,6 +82,163 @@
           margin-top: 1rem;
         }
       }
+
+      .add-comment {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .comment-input {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .add-comment h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+      }
+
+      .add-comment form {
+        width: 100%;
+      }
+
+      .add-comment .form-control {
+        width: 100%;
+        /* padding: 1rem; */
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        /* margin-bottom: 1rem; */
+        transition: border-color 0.2s ease;
+      }
+
+      .add-comment .form-control:focus {
+        outline: none;
+        border-color: #4a90e2;
+      }
+
+      .add-comment .btn-primary {
+        background-color: #4a90e2;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        margin-left: 5px;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+      }
+
+      .add-comment .btn-primary:hover {
+        background-color: #357abd;
+      }
+      .comment-content {
+        margin-left: 55px;
+      }
+
+      /* display comment */
+      .displaying-comment {
+        margin-top: 2rem;
+      }
+
+      .displaying-comment > div {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .displaying-comment > div:last-child {
+        border-bottom: none;
+      }
+
+      .comment-content {
+        display: block;
+        margin-left: 55px;
+        margin-top: 0.5rem;
+        color: #4a5568;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .displaying-comment > div {
+          padding: 1rem 0;
+        }
+
+        .comment-content {
+          margin-left: 50px;
+          font-size: 0.95rem;
+        }
+      }
+
+      /* updating displaying comment styling */
+      .displaying-comment {
+        margin-top: 1rem;
+      }
+
+      .displaying-comment > div {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .displaying-comment > div:last-child {
+        border-bottom: none;
+      }
+
+      .displaying-comment .author-container {
+        margin-bottom: 0.25rem;
+      }
+
+      .displaying-comment .profile-image {
+        width: 32px;
+        height: 32px;
+        margin-right: 0.5rem;
+      }
+
+      .comment-content {
+        display: block;
+        margin-left: 45px;
+        color: #4a5568;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      /* Add new styles for the newest comment */
+      .displaying-comment > div {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e2e8f0;
+        transition: background-color 0.3s ease;
+      }
+
+      .displaying-comment > div:first-child {
+        background-color: #e8f5e9; /* Light green background */
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+      }
+
+      .displaying-comment > div:first-child .comment-content {
+        color: #2e7d32; /* Slightly darker green for better contrast */
+      }
+
+      .date {
+        color: #718096;
+        font-size: 0.85rem;
+      }
+
+      .author-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .author-container > div {
+        display: flex;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
@@ -97,20 +255,76 @@
 
       <div class="meta-container">
         <div class="author-container">
-          <img
-            src="<%= blog.createdBy.profileImage %>"
-            alt="Author profile"
-            class="profile-image"
-          />
-          <span class="author-name"><%= blog.createdBy.fullName %></span>
+          <div>
+            <img
+              src="<%= blog.createdBy.profileImage %>"
+              alt="Author profile"
+              class="profile-image"
+            />
+            <span class="author-name"><%= blog.createdBy.fullName %></span>
+          </div>
+          <span class="date">
+            <%= new Date(blog.createdAt).toLocaleDateString('en-US', { month:
+            'short', day: 'numeric', year: 'numeric' }) %>
+          </span>
         </div>
-        <span class="date">
-          <%= new Date(blog.createdAt).toLocaleDateString('en-US', { month:
-          'short', day: 'numeric', year: 'numeric' }) %>
-        </span>
       </div>
 
       <div class="blog-content"><%= blog.body %></div>
+
+      <div class="container mt-3 add-comment">
+        <h1>Comments (<%= comments?.length %>)</h1>
+        <% if (locals.user) { %>
+        <form action="/blog/comment/<%= blog._id %>" method="post">
+          <div class="comment-input mb-3">
+            <input
+              type="text"
+              name="content"
+              class="form-control"
+              id="comment"
+              placeholder="Leave a comment"
+            />
+            <button type="submit" class="btn-sm btn btn-primary">Add</button>
+          </div>
+        </form>
+      </div>
+      <!-- displaying comments -->
+      <div class="displaying-comment mt-3">
+        <% function formatWhatsAppTime(timestamp) { const now = new Date();
+        const commentDate = new Date(timestamp); const diffInHours =
+        Math.floor((now - commentDate) / (1000 * 60 * 60)); const diffInDays =
+        Math.floor(diffInHours / 24); const hours = commentDate.getHours();
+        const minutes = commentDate.getMinutes().toString().padStart(2, '0');
+        const timeStr = `${hours % 12 || 12}:${minutes} ${hours >= 12 ? 'PM' :
+        'AM'}`; if (diffInDays === 0) { return `Today ${timeStr}`; } else if
+        (diffInDays === 1) { return `Yesterday ${timeStr}`; } else if
+        (diffInDays < 7) { const days = ['Sunday', 'Monday', 'Tuesday',
+        'Wednesday', 'Thursday', 'Friday', 'Saturday']; return
+        `${days[commentDate.getDay()]} ${timeStr}`; } else { const month =
+        commentDate.toLocaleString('default', { month: 'short' }); const date =
+        commentDate.getDate(); return `${month} ${date}, ${timeStr}`; } } %> <%
+        comments?.sort((a, b) => new Date(b.createdAt) - new
+        Date(a.createdAt)).forEach(comment => { %>
+        <div>
+          <div class="author-container">
+            <div>
+              <img
+                src="<%= comment.createdBy.profileImage %>"
+                alt="Author profile"
+                class="profile-image"
+              />
+              <span class="author-name"><%= comment.createdBy.fullName %></span>
+            </div>
+            <span class="date">
+              <%= formatWhatsAppTime(comment.createdAt) %>
+            </span>
+          </div>
+          <span class="comment-content"><%= comment.content %></span>
+        </div>
+        <% }) %>
+      </div>
+
+      <% } %>
     </main>
 
     <%- include('./partials/scripts.ejs')%>
