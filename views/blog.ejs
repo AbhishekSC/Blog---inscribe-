@@ -337,19 +337,24 @@
 
       <div class="displaying-comment">
         <% function formatWhatsAppTime(timestamp) { const now = new Date();
-        const commentDate = new Date(timestamp); const diffInHours =
-        Math.floor((now - commentDate) / (1000 * 60 * 60)); const diffInDays =
-        Math.floor(diffInHours / 24); const hours = commentDate.getHours();
-        const minutes = commentDate.getMinutes().toString().padStart(2, '0');
-        const timeStr = `${hours % 12 || 12}:${minutes} ${hours >= 12 ? 'PM' :
-        'AM'}`; if (diffInDays === 0) { return `Today ${timeStr}`; } else if
-        (diffInDays === 1) { return `Yesterday ${timeStr}`; } else if
-        (diffInDays < 7) { const days = ['Sunday', 'Monday', 'Tuesday',
-        'Wednesday', 'Thursday', 'Friday', 'Saturday']; return
-        `${days[commentDate.getDay()]} ${timeStr}`; } else { const month =
-        commentDate.toLocaleString('default', { month: 'short' }); const date =
-        commentDate.getDate(); return `${month} ${date}, ${timeStr}`; } } %> <%
-        comments?.sort((a, b) => new Date(b.createdAt) - new
+        const commentDate = new Date(timestamp); // Reset time components to
+        compare just the dates const nowDate = new Date(now.getFullYear(),
+        now.getMonth(), now.getDate()); const commentLocalDate = new
+        Date(commentDate.getFullYear(), commentDate.getMonth(),
+        commentDate.getDate()); // Calculate difference in days const diffInMs =
+        nowDate - commentLocalDate; const diffInDays = Math.floor(diffInMs /
+        (1000 * 60 * 60 * 24)); // Format the time component const hours =
+        commentDate.getHours(); const minutes =
+        commentDate.getMinutes().toString().padStart(2, '0'); const timeStr =
+        `${hours % 12 || 12}:${minutes} ${hours >= 12 ? 'PM' : 'AM'}`; // Return
+        appropriate format based on difference if (diffInDays === 0) { return
+        `Today ${timeStr}`; } else if (diffInDays === 1) { return `Yesterday
+        ${timeStr}`; } else if (diffInDays < 7) { const days = ['Sunday',
+        'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return `${days[commentDate.getDay()]} ${timeStr}`; } else { const month
+        = commentDate.toLocaleString('default', { month: 'short' }); const date
+        = commentDate.getDate(); return `${month} ${date}, ${timeStr}`; } } %>
+        <% comments?.sort((a, b) => new Date(b.createdAt) - new
         Date(a.createdAt)).forEach(comment => { %>
         <div>
           <div class="author-container">
