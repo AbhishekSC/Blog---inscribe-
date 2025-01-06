@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: false })); //handling FORM data
 app.use(cookieParser()); //handling cookies
 app.use(express.static(path.resolve("./public"))); //statically serving the file onto our app
 app.use(checkForAuthenticationCookie("token"));
+app.use(express.static('public'));
 
 //routes
 //render HOME page
