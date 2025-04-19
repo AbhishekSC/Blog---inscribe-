@@ -1,4 +1,4 @@
-import { validateToken } from "../services/authentication.service.js";
+import { validateAccessToken } from "../services/authentication.service.js";
 
 function checkForAuthenticationCookie(cookieName) {
   return (req, res, next) => {
@@ -9,8 +9,9 @@ function checkForAuthenticationCookie(cookieName) {
     }
 
     try {
-      const userPayload = validateToken(tokenCookieValue);
+      const userPayload = validateAccessToken(tokenCookieValue);
       req.user = userPayload;
+      console.log(user);
     } catch (error) {}
 
     next();

@@ -1,7 +1,7 @@
 //import
 import mongoose from "mongoose";
 import { randomBytes, createHmac } from "crypto";
-import { createTokenForUser } from "../services/authentication.service.js";
+import { createAccessToken } from "../services/authentication.service.js";
 
 //Schema
 const userSchema = new mongoose.Schema(
@@ -77,9 +77,9 @@ userSchema.static(
       throw new Error("Incorrect password");
     }
 
-    //   return user;
-    const token = createTokenForUser(user);
-    return token;
+    const accessToken = createAccessToken(user);
+    console.log(`AccessToken generated in user.model: ${accessToken}`);
+    return accessToken;
   }
 );
 
