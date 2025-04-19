@@ -19,6 +19,7 @@ router.get("/signup", (req, res) => {
   return res.render("signup");
 });
 
+//user signup-signin route: POST
 router.post("/signup", handleUserSignup);
 router.post("/signin", handleUserSignin);
 router.get("/logout", (req, res) => {
